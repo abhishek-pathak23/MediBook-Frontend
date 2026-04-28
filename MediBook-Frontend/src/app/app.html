@@ -1,0 +1,76 @@
+<!-- Toast Container -->
+<div class="toast-container">
+  @for (t of toast.toasts(); track t.id) {
+    <div class="toast toast-{{ t.type }}" (click)="toast.dismiss(t.id)">{{ t.message }}</div>
+  }
+</div>
+
+@if (showNav) {
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h3>
+        <a [routerLink]="dashboardLink" style="color: inherit; text-decoration: none;">
+          💊 MediBook
+        </a>
+      </h3>
+      @for (item of sidebarItems; track item.link) {
+        <a class="sidebar-item" [routerLink]="item.link"
+           [class.active]="router.url === item.link">
+          <span>{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+      <div style="flex: 1;"></div>
+
+      <!-- Notification Bell -->
+      <div class="sidebar-item notification-bell-container" (click)="toggleNotifications()" style="position: relative; cursor: pointer;">
+        <span>🔔</span>
+        <span>Notifications</span>
+        @if (notif.unreadCount() > 0) {
+          <span class="notif-badge">{{ notif.unreadCount() }}</span>
+        }
+      </div>
+
+      @if (showNotifPanel) {
+        <div class="notif-panel">
+          <div class="notif-header">
+            <strong>Notifications</strong>
+            @if (notifications.length > 0) {
+              <button class="btn-link" (click)="markAllRead()">Mark all read</button>
+            }
+          </div>
+          @if (notifications.length === 0) {
+            <div class="notif-empty">No notifications yet</div>
+          } @else {
+            <div class="notif-list">
+              @for (n of notifications; track n.notificationId) {
+                <div class="notif-item" [class.unread]="!n.isRead" (click)="markRead(n)">
+                  <div class="notif-title">{{ n.title }}</div>
+                  <div class="notif-msg">{{ n.message }}</div>
+                  <div class="notif-time">{{ n.sentAt | date:'short' }}</div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      <div class="sidebar-item" style="margin-top: auto; color: var(--text-muted); font-size: 0.8rem;">
+        {{ auth.currentUser()?.fullName }}
+        <span class="badge badge-accent" style="margin-left: auto;">{{ auth.getRole() }}</span>
+      </div>
+      <a class="sidebar-item" style="color: var(--danger);" (click)="doLogout()">
+        <span>🚪</span>
+        <span>Logout</span>
+      </a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content animate-in">
+      <router-outlet />
+    </main>
+  </div>
+} @else {
+  <router-outlet />
+}
