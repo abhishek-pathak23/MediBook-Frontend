@@ -61,7 +61,7 @@ import { AvailabilitySlot } from '../../../core/models/schedule.model';
           @for (s of slots; track s.slotId) {
             <tr>
               <td>{{ s.date }}</td>
-              <td>{{ s.startTime }} - {{ s.endTime }}</td>
+              <td>{{ formatTime12Hour(s.startTime) }} - {{ formatTime12Hour(s.endTime) }}</td>
               <td>{{ s.durationMinutes }}m</td>
               <td><span class="badge" [class.badge-success]="s.status==='Available'"
                    [class.badge-warning]="s.status==='Blocked'" [class.badge-danger]="s.status==='Booked'">{{ s.status }}</span></td>
@@ -197,6 +197,14 @@ export class ManageScheduleComponent implements OnInit {
     const newH = Math.floor(total / 60) % 24;
     const newM = total % 60;
     return `${String(newH).padStart(2, '0')}:${String(newM).padStart(2, '0')}`;
+  }
+
+  formatTime12Hour(timeStr: string): string {
+    if (!timeStr) return '';
+    const [h, m] = timeStr.split(':').map(Number);
+    const suffix = h >= 12 ? 'PM' : 'AM';
+    const h12 = h % 12 || 12;
+    return `${String(h12).padStart(2, '0')}:${String(m).padStart(2, '0')} ${suffix}`;
   }
 
   blockSlot(id: number): void { this.schedService.blockSlot(id).subscribe({ next: () => this.loadSlots() }); }

@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   private loadFromStorage(): void {
-    const stored = localStorage.getItem('medibook_user');
+    const stored = sessionStorage.getItem('medibook_user');
     if (stored) {
       const user: AuthResponse = JSON.parse(stored);
       this.currentUser.set(user);
@@ -38,8 +38,8 @@ export class AuthService {
   login(data: LoginRequest) {
     return this.http.post<AuthResponse>(`${this.api}/login`, data).pipe(
       tap(res => {
-        localStorage.setItem('medibook_token', res.token);
-        localStorage.setItem('medibook_user', JSON.stringify(res));
+        sessionStorage.setItem('medibook_token', res.token);
+        sessionStorage.setItem('medibook_user', JSON.stringify(res));
         this.currentUser.set(res);
         this.isLoggedIn.set(true);
         this.signalrService.connect(res.token);
@@ -54,8 +54,8 @@ export class AuthService {
   }
 
   clearSession(): void {
-    localStorage.removeItem('medibook_token');
-    localStorage.removeItem('medibook_user');
+    sessionStorage.removeItem('medibook_token');
+    sessionStorage.removeItem('medibook_user');
     this.currentUser.set(null);
     this.isLoggedIn.set(false);
     this.signalrService.disconnect();
@@ -87,7 +87,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('medibook_token');
+    return sessionStorage.getItem('medibook_token');
   }
 
   getRole(): string {
