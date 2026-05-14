@@ -12,5 +12,5 @@ export const environment = {
     record: 'https://api-gateway-vdad.onrender.com/api/v1/records'
   },
   signalrHub: 'https://notification-service-o9q0.onrender.com/notifHub',
-  razorpayKey: 'rzp_test_Sgon32WsnbocWD'
+  razorpayKey: 'rzp_test_SpLPl9V9sZ4UZJ'
 };

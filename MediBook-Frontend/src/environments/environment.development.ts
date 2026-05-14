@@ -10,5 +10,5 @@ export const environment = {
     notification: 'http://localhost:5006/api/v1/notifications',
     record: 'http://localhost:5007/api/v1/records'
   },
-  razorpayKey: 'rzp_test_Sgon32WsnbocWD'
+  razorpayKey: 'rzp_test_SpLPl9V9sZ4UZJ'
 };
