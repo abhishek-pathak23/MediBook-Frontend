@@ -1,0 +1,10 @@
+{
+  "buildCommand": "cd MediBook-Frontend && npm install && npm run build",
+  "outputDirectory": "MediBook-Frontend/dist/MediBook-Frontend/browser",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
